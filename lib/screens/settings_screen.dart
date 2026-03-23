@@ -1,7 +1,6 @@
 ﻿import 'package:flutter/material.dart';
-import '../services/logger.dart';
 import 'package:provider/provider.dart';
-import '../theme/app_theme.dart';
+import '../services/logger.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -15,7 +14,7 @@ class SettingsScreen extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: accent),
           onPressed: () => Navigator.push(ctx, MaterialPageRoute(builder: (_) => const LogsScreen())),
-          child: const Text("Voir les Logs & Erreurs", style: TextStyle(color: Colors.black)),
+          child: const Text("Voir les Logs & Erreurs", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         ),
       ),
     );
