@@ -1,0 +1,73 @@
+name: waveplayer
+description: Lecteur MP3 local + Streaming YouTube avec crossfade et smart shuffle
+publish_to: none
+version: 2.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ── Audio ──────────────────────────────────────
+  just_audio: ^0.9.36
+  just_audio_background: ^0.0.1+4
+  audio_session: ^0.1.18
+
+  # ── MP3 locaux + metadata ID3 ──────────────────
+  on_audio_query: ^2.9.0
+
+  # ── Streaming YouTube (comme Musify) ───────────
+  youtube_explode_dart: ^2.2.0
+
+  # ── Persistance locale ─────────────────────────
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  shared_preferences: ^2.2.2
+
+  # ── State management ───────────────────────────
+  provider: ^6.1.1
+
+  # ── UI / Design ────────────────────────────────
+  cached_network_image: ^3.3.1
+  palette_generator: ^0.3.3+3
+  sliding_up_panel: ^2.0.0+1
+  flutter_staggered_animations: ^1.1.1
+  shimmer: ^3.0.0
+  google_fonts: ^6.1.0
+
+  # ── Widget Android écran d'accueil ─────────────
+  home_widget: ^0.4.1
+
+  # ── Permissions ────────────────────────────────
+  permission_handler: ^11.1.0
+
+  # ── Utilitaires ────────────────────────────────
+  path_provider: ^2.1.2
+  file_picker: ^6.1.1
+  intl: ^0.19.0
+  rxdart: ^0.27.7
+  uuid: ^4.3.3
+  connectivity_plus: ^5.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  hive_generator: ^2.0.1
+  build_runner: ^2.4.8
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/default_cover.png
+  fonts:
+    - family: Figtree
+      fonts:
+        - asset: assets/fonts/Figtree-Regular.ttf
+        - asset: assets/fonts/Figtree-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Figtree-ExtraBold.ttf
+          weight: 800
