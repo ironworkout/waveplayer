@@ -1,5 +1,5 @@
-﻿name: waveplayer
-description: "A new Flutter project."
+name: waveplayer
+description: "Lecteur MP3 + Streaming YouTube"
 publish_to: "none"
 version: 1.0.0+1
 
@@ -9,21 +9,34 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.6
+
+  # Audio
   just_audio: ^0.9.36
   just_audio_background: ^0.0.1-beta.11
+  audio_session: ^0.1.18
+
+  # MP3 locaux
   on_audio_query: ^2.9.0
-  path_provider: ^2.1.2
-  provider: ^6.1.1
-  youtube_explode_dart: 2.2.2
-  get_it: ^7.6.7
+
+  # Streaming YouTube
+  youtube_explode_dart: ^2.2.2
+
+  # Base locale
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  google_fonts: ^6.1.0
-  permission_handler: ^11.3.0
-  shared_preferences: ^2.2.2
+
+  # State
+  provider: ^6.1.1
+
+  # UI
   cached_network_image: ^3.3.1
   palette_generator: ^0.3.3+3
+  google_fonts: ^6.1.0
+
+  # Permissions + prefs
+  permission_handler: ^11.3.0
+  shared_preferences: ^2.2.2
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:
@@ -34,5 +47,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/default_cover.png
+  # PAS d'assets déclarés — évite le crash si le fichier n'existe pas
