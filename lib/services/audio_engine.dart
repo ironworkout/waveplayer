@@ -22,35 +22,34 @@ class AudioEngine extends ChangeNotifier {
   }
 
   Future<void> playLocal(Song song, {List<Song>? newQueue}) async {
-    try {
-      if (newQueue != null) queue = newQueue;
-      currentSong = song;
-      notifyListeners();
-
-      await _player.setAudioSource(
-        AudioSource.file(song.filePath, tag: MediaItem(id: song.id, title: song.title, artist: song.artist))
-      );
-      await _player.play();
-    } catch (e) {
-      debugPrint("Erreur lecture locale: $e");
-    }
+    if (newQueue != null) queue = newQueue;
+    currentSong = song;
+    notifyListeners();
+    await _player.setAudioSource(AudioSource.file(song.filePath, tag: MediaItem(id: song.id, title: song.title, artist: song.artist)));
+    await _player.play();
   }
 
   Future<void> playUrl(Song song, String url) async {
-    try {
-      currentSong = song;
-      notifyListeners();
-      await _player.setAudioSource(
-        AudioSource.uri(Uri.parse(url), tag: MediaItem(id: song.id, title: song.title, artist: song.artist))
-      );
-      await _player.play();
-    } catch (e) {
-      debugPrint("Erreur stream: $e");
-    }
+    currentSong = song;
+    notifyListeners();
+    await _player.setAudioSource(AudioSource.uri(Uri.parse(url), tag: MediaItem(id: song.id, title: song.title, artist: song.artist)));
+    await _player.play();
   }
 
   void togglePlay() { if (_player.playing) _player.pause(); else _player.play(); }
-  void playNext() { /* Logique simple de suivant */ }
+  
+  void playNext() {
+    if (queue.isEmpty || currentSong == null) return;
+    int idx = queue.indexWhere((s) => s.id == currentSong!.id);
+    if (idx < queue.length - 1) playLocal(queue[idx + 1]);
+  }
+
+  void playPrev() {
+    if (queue.isEmpty || currentSong == null) return;
+    int idx = queue.indexWhere((s) => s.id == currentSong!.id);
+    if (idx > 0) playLocal(queue[idx - 1]);
+  }
+
   void seekTo(Duration p) => _player.seek(p);
   Stream<Duration> get positionStream => _player.positionStream;
 }
