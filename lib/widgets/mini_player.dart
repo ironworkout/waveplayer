@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
-
 import '../services/audio_engine.dart';
 import '../screens/player_screen.dart';
 
@@ -13,13 +12,11 @@ class MiniPlayer extends StatelessWidget {
     final engine = ctx.watch<AudioEngine>();
     final song = engine.currentSong;
     if (song == null) return const SizedBox.shrink();
-
     final accent = Theme.of(ctx).colorScheme.primary;
 
     return GestureDetector(
       onTap: () => Navigator.push(ctx, MaterialPageRoute(
-        builder: (_) => PlayerScreen(queue: [song]),
-      )),
+        builder: (_) => PlayerScreen(queue: engine.queue))),
       child: Container(
         margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -31,25 +28,19 @@ class MiniPlayer extends StatelessWidget {
         ),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Row(children: [
-            // Thumbnail
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: SizedBox(width: 42, height: 42, child: song.thumbnailUrl != null
-                ? CachedNetworkImage(imageUrl: song.thumbnailUrl!, fit: BoxFit.cover,
-                    errorWidget: (_, __, ___) => _thumb())
-                : _thumb()),
+              child: SizedBox(width: 42, height: 42,
+                child: song.thumbnailUrl != null
+                    ? CachedNetworkImage(imageUrl: song.thumbnailUrl!, fit: BoxFit.cover,
+                        errorWidget: (_, __, ___) => _thumb())
+                    : _thumb()),
             ),
             const SizedBox(width: 12),
-
-            // Info
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(song.title, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
-                maxLines: 1, overflow: TextOverflow.ellipsis),
-              Text(song.artist, style: const TextStyle(fontSize: 11, color: Color(0xFF6060A0)),
-                maxLines: 1, overflow: TextOverflow.ellipsis),
+              Text(song.title, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700), maxLines: 1, overflow: TextOverflow.ellipsis),
+              Text(song.artist, style: const TextStyle(fontSize: 11, color: Color(0xFF6060A0)), maxLines: 1, overflow: TextOverflow.ellipsis),
             ])),
-
-            // Source badge
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
@@ -60,35 +51,26 @@ class MiniPlayer extends StatelessWidget {
                 style: TextStyle(fontSize: 9, fontWeight: FontWeight.w900,
                   color: song.isStream ? Colors.redAccent : accent)),
             ),
-            const SizedBox(width: 8),
-
-            // Prev
+            const SizedBox(width: 6),
             IconButton(
               icon: const Icon(Icons.skip_previous_rounded, size: 22),
               padding: EdgeInsets.zero, constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-              onPressed: () {},
+              onPressed: () => engine.playPrev(),
             ),
-
-            // Play / Pause
             GestureDetector(
               onTap: engine.togglePlay,
               child: Container(
                 width: 38, height: 38,
                 decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
-                child: Icon(engine.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
-                  color: Colors.black, size: 20),
+                child: Icon(engine.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded, color: Colors.black, size: 20),
               ),
             ),
-
-            // Next
             IconButton(
               icon: const Icon(Icons.skip_next_rounded, size: 22),
               padding: EdgeInsets.zero, constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-              onPressed: () {},
+              onPressed: () => engine.playNext(),
             ),
           ]),
-
-          // Progress bar fine
           const SizedBox(height: 8),
           StreamBuilder<Duration>(
             stream: engine.positionStream,
@@ -98,8 +80,7 @@ class MiniPlayer extends StatelessWidget {
               return LinearProgressIndicator(
                 value: (pos / tot).clamp(0.0, 1.0),
                 backgroundColor: const Color(0xFF2A2A45),
-                color: accent,
-                minHeight: 2,
+                color: accent, minHeight: 2,
                 borderRadius: BorderRadius.circular(1),
               );
             },
@@ -109,8 +90,5 @@ class MiniPlayer extends StatelessWidget {
     );
   }
 
-  Widget _thumb() => Container(
-    color: const Color(0xFF0F0F1A),
-    child: const Center(child: Text('🎵', style: TextStyle(fontSize: 18))),
-  );
+  Widget _thumb() => Container(color: const Color(0xFF0F0F1A), child: const Center(child: Text('🎵', style: TextStyle(fontSize: 18))));
 }
