@@ -1,22 +1,9 @@
-def gms_version = '4.3.15'
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 android {
-    namespace 'com.example.waveplayer'
+    namespace "com.example.waveplayer"
     compileSdkVersion 34
-    ndkVersion flutter.ndkVersion
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = '17'
-    }
-
     defaultConfig {
         applicationId "com.example.waveplayer"
         minSdkVersion 21
@@ -24,18 +11,6 @@ android {
         versionCode 1
         versionName "1.0.0"
     }
-
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug
-        }
-    }
+    buildTypes { release { signingConfig signingConfigs.debug } }
 }
-
-flutter {
-    source '../..'
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-}
+dependencies { implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0" }
