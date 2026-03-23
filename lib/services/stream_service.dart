@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import '../models/song.dart';
@@ -31,12 +31,10 @@ class StreamResult {
 
 class StreamService extends ChangeNotifier {
   final YoutubeExplode _yt = YoutubeExplode();
-
   List<StreamResult> results = [];
   bool isLoading = false;
   String? error;
 
-  // ── Recherche de musiques ──────────────────────
   Future<void> search(String query) async {
     if (query.trim().isEmpty) return;
     isLoading = true;
@@ -47,47 +45,37 @@ class StreamService extends ChangeNotifier {
     try {
       final searchResults = await _yt.search.search(query);
       results = searchResults
-          .whereType<SearchVideo>()
           .take(25)
           .map((v) => StreamResult(
                 videoId: v.id.value,
                 title: v.title,
                 artist: v.author,
-                thumbnail: v.thumbnails.lowResUrl,
+                thumbnail: v.thumbnails.standardResUrl,
                 durationMs: v.duration?.inMilliseconds ?? 0,
               ))
           .toList();
     } catch (e) {
-      error = 'Erreur de recherche : $e';
+      error = 'Erreur : $e';
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
 
-  // ── Récupérer l'URL audio directe ─────────────
-  // youtube_explode extrait l'URL du stream audio sans passer par l'iframe
   Future<String?> getAudioUrl(String videoId) async {
     try {
       final manifest = await _yt.videos.streamsClient.getManifest(videoId);
-      // Préférer audio only (plus léger), meilleure qualité disponible
       final audioOnly = manifest.audioOnly;
       if (audioOnly.isEmpty) return null;
-      // Trier par bitrate décroissant
-      final best = audioOnly.withHighestBitrate();
-      return best.url.toString();
+      return audioOnly.withHighestBitrate().url.toString();
     } catch (e) {
-      debugPrint('StreamService.getAudioUrl error: $e');
       return null;
     }
   }
 
-  // ── Jouer directement depuis videoId ──────────
   Future<void> playVideo(String videoId, AudioEngine engine) async {
     final url = await getAudioUrl(videoId);
     if (url == null) return;
-
-    // Trouve la song correspondante dans results
     final r = results.firstWhere(
       (r) => r.videoId == videoId,
       orElse: () => StreamResult(videoId: videoId, title: '', artist: '', durationMs: 0),

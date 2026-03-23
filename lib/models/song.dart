@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+﻿import 'package:hive/hive.dart';
 
 part 'song.g.dart';
 
@@ -6,19 +6,21 @@ enum SongSource { local, stream }
 
 @HiveType(typeId: 0)
 class Song extends HiveObject {
+  Song(); 
+
   @HiveField(0) late String id;
   @HiveField(1) late String title;
   @HiveField(2) late String artist;
   @HiveField(3) late String album;
-  @HiveField(4) late String filePath;     // chemin absolu pour local, videoId pour stream
+  @HiveField(4) late String filePath;
   @HiveField(5) late int durationMs;
   @HiveField(6) bool isLiked = false;
   @HiveField(7) int playCount = 0;
   @HiveField(8) int skipCount = 0;
   @HiveField(9) double shuffleWeight = 1.0;
   @HiveField(10) DateTime? lastPlayed;
-  @HiveField(11) String? thumbnailUrl;    // pour les streams
-  @HiveField(12) String sourceStr = 'local'; // 'local' | 'stream'
+  @HiveField(11) String? thumbnailUrl;
+  @HiveField(12) String sourceStr = 'local';
 
   SongSource get source =>
       sourceStr == 'stream' ? SongSource.stream : SongSource.local;
@@ -41,7 +43,6 @@ class Song extends HiveObject {
     return '$m:$s';
   }
 
-  // Factory pour un résultat de streaming
   factory Song.fromStream({
     required String id,
     required String title,
@@ -62,7 +63,6 @@ class Song extends HiveObject {
     return s;
   }
 
-  // Factory pour un fichier local
   factory Song.fromLocal({
     required String id,
     required String title,
