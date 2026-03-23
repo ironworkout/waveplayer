@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/stream_service.dart';
 import '../services/audio_engine.dart';
@@ -45,7 +45,7 @@ class _StreamTabState extends State<StreamTab> {
             song: r.toSong(), thumbnail: r.thumbnail, onTap: () => _playStream(context, i),
             trailing: progress != null 
               ? SizedBox(width: 24, height: 24, child: CircularProgressIndicator(value: progress, color: accent, strokeWidth: 2))
-              : IconButton(icon: const Icon(Icons.cloud_download_outlined, color: Color(0xFF6060A0)), onPressed: () => svc.downloadVideo(r)),
+              : IconButton(icon: const Icon(Icons.cloud_download_outlined, color: Color(0xFF6060A0)), onPressed: () => svc.downloadVideo(r, context)),
           );
         }, childCount: svc.results.length)),
         const SliverToBoxAdapter(child: SizedBox(height: 140)),
