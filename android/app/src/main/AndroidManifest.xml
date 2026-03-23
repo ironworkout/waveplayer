@@ -8,11 +8,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
 
-    <application 
-        android:label="WavePlayer" 
-        android:name="${applicationName}" 
-        android:icon="@mipmap/ic_launcher" 
-        android:usesCleartextTraffic="true">
+    <application android:label="WavePlayer" android:name="${applicationName}" android:icon="@mipmap/ic_launcher" android:usesCleartextTraffic="true">
         <activity 
             android:name="com.example.waveplayer.MainActivity"
             android:exported="true" 
